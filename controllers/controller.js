@@ -148,15 +148,6 @@ module.exports = function (app, db, io) {
         res.redirect('/'); 
     });
 
-      // app.get('/getSocket/:userName', function (req,res) {
-      //   let connected = socketConnection.getObj();
-      //   console.log('Firing after getObj:', req.params.userName)
-      //   let userSocket = connected[req.params.userName];
-      //   console.log('connected obj:', connected);
-      //   console.log('userSocket from backend:', userSocket);
-      //   res.send(userSocket)
-      // });
-
   //When the user logs in, they get this view.
   app.get('/userView', function(req,res) {
     var users = [];
@@ -268,16 +259,4 @@ module.exports = function (app, db, io) {
 
 
 }//end of export obj  
-// //Unused code for future video
-// app.get(`/:username/video/`, (req, res) => {
-//     db.VideoChat.findOne({
-//       where: {
-//         recUserName: currentUser.userName
-//       }
-//     }).then((results) => {
-//       let vidInfo = results.dataValues;
-//       res.render("videoChat", { vidInfo });
-//     });
-// });
-
 
