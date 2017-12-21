@@ -1,16 +1,12 @@
 <div class="userView-container">
 	<header>
 		<img src="{{currentUser.img}}" alt="Image of {{currentUser.userName}}" class="logo">
-		<h1 id="userGreeting">Hello, {{currentUser.userName}}!</h1>
+		<h1 id="userGreeting">Hello, {{currentUser.userName}}...</h1>
 		<nav>
 			<ul>
-				<li id="update-account" class="navItem">Profile</li>
+				<li id="update-account" class="navItem"><i class="fa fa-pencil" aria-hidden="true"></i>  Update Profile</li>
 				<li>|</li>
-				{{!-- <li class="navItem" id="inbox">Inbox</li>
-				<li>|</li> --}}
-				{{!-- <li class="navItem">Conversations</li>
-				<li>|</li> --}}
-				<li class="navItem" id="sign-out">Sign Out</li>
+				<li class="navItem" id="sign-out"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</li>
 			</ul>
 		</nav>
 	</header>
@@ -26,7 +22,6 @@
 			<button class="choose" data-swipe="false" data-user="{{userName}}"><i class="fa fa-times fa-3x" aria-hidden="true"></i></button>
 			<button class="choose" data-swipe="true" data-user="{{userName}}"><i class="fa fa-check fa-3x" aria-hidden="true"></i></button>
 		</div>
-
 	{{/each}}
 
 	<div class="noMore centered">
@@ -34,30 +29,11 @@
 
 	</div>
 
-{{!-- commented out in case we want to utilize in the future --}}
-
-{{!-- 
-	<div id="swiped-container">
-		<div class="swiped-user">
-			<img src="https://www.fillmurray.com/300/300" alt="">
-			<h3 class="swiped-userName">Bill Murray</h3>
-			<button class="viewAgain" data-userName="Bill Murray" data-img="https://www.fillmurray.com/300/300">View Again</button>
-		</div>
-		{{#each swiped}}
-			<div class="swiped-user">
-				<img src="{{img}}" alt="image of {{userName}}">
-				<h3 class="swiped-userName">{{userName}}</h3>
-				<button class="viewAgain" data-userName="{{userName}}" data-img="{{img}}">View Again</button>
-			</div>
-		{{/each}}
-	</div> --}}
-
-
 	<div id="chat-accordion" class="chat-accordion chats">
 		<h3>Chat</h3>
 		  <div>
-		  	{{#each users}}
-				<p class="chatUser">{{userName}}</p>
+		  	{{#each connections}}
+				<p class="chatUser">{{this}}</p>
 		  	{{/each}}
 		  </div>
 	</div>
@@ -97,43 +73,6 @@
 				</div>
 			</div>
 		</div>{{!-- end of #update-account-modal --}}
-
-		<div class="modal" id="inbox-modal">
-			<div class="modal-content">
-				<div class="close"><i class="fa fa-times fa-2x" aria-hidden="true"></i></div>
-				<div class="modal-header">
-					<h2>Hello {{currentUser.userName}}, here are the people you have contacted</h2>
-				</div>
-				<div class="modal-body">
-					
-				</div>
-			</div>
-		</div>{{!-- end of #inbox-modal --}}
-
-
-
-	{{!-- commented out in case we want to utilize in the future --}}
-
-	{{!-- 	<div class="modal" id="viewAgain-modal">
-			<div class="modal-content">
-				<div class="close"><i class="fa fa-times fa-2x" aria-hidden="true"></i></div>
-				<div class="modal-header">
-					
-				</div>
-				<div class="modal-body">
-					<div class="centered">
-						<h2 class="tileTitle" id="viewAgain-userName"></h2>
-						<div class="imgContainer">
-							<img src="" alt="" class="userImage" id="viewAgain-img">
-						</div>
-						<p class="userBio"></p>
-						<button class="choose modal-close" data-swipe="false" data-user="" id="left"><i class="fa fa-times fa-3x" aria-hidden="true"></i></button>
-						<button class="choose modal-close" data-swipe="true" data-user="" id="right"><i class="fa fa-check fa-3x" aria-hidden="true"></i></button>
-					</div>
-				</div>
-			</div>
-		</div> --}}
-
 		<div id="match-modal" class="modal">
 			<div class="modal-content">
 				<div class="close"><i class="fa fa-times fa-2x" aria-hidden="true"></i></div>
@@ -143,15 +82,6 @@
 				<div class="modal-body"></div>
 			</div>
 		</div>
-
-		<div class="bubble-container">
-			<div id="connectBubble" data-username="">
-				<button id="connect-chat" class="chat-button">Chat</button>
-				<button id="connect-video" class="chat-button">Video Chat</button>
-			</div>
-		</div>
-
-
 	<footer></footer>
 </div>
 <script>

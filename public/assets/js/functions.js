@@ -17,9 +17,9 @@ function closeModal(modalId) {
 }
 
 function loginUser() {
-	console.log('loginUser called')
+	console.log('loginUser called');
 	let clean = false;
-	let user = {}
+	let user = {};
 	user.userName = $('#username').val().trim();
 	user.password = $('#password').val().trim();
 
@@ -40,6 +40,73 @@ function loginUser() {
 			$('#username').attr('placeholder', 'Username or password is incorrect.');
 			$('#password').attr('placeholder', 'Username or password is incorrect.');
 			setTimeout(replacePlaceHolders, 3000);
+		});
+	}
+}
+
+function databaseVolumeCheck(){
+	$.ajax("/api/dataCount", {
+		type:'GET'
+	}).done(function(res){
+		if (res<10){
+			databasePopulate();
+		}
+	});
+}
+
+function databasePopulate(){
+	var namesList = ["Marco", "Principio", "Taliesin", "Cochran", "EJ", "Morgan", "Vytas", "Rudzinskas", "Kate", "Upton", "Minnie", "Mickey", "Mouse", "89", "92", "Whatevs", "Grrl", "Boi", "Captain", "Madame", "Planet", "StarWars", "Burger"];
+
+	function randName(){
+		var tempIndex = Math.floor(Math.random()*namesList.length);
+		var tempName = namesList[Math.floor(Math.random()*namesList.length)];
+		tempName += namesList[tempIndex];
+		if (tempName.length < 8){
+			tempName += namesList[Math.floor(Math.random()*namesList.length)];
+		}
+		return tempName;
+	}
+
+	function randGen(){
+		var tempGen = Math.floor(Math.random()*2);
+		if (tempGen < 1){
+			tempGen = 'm';
+		}
+		else{
+			tempGen = 'f';
+		}
+		return tempGen;
+	}
+
+	function randAge(){
+		var tempAge = Math.floor(Math.random()*42);
+		tempAge += 18;
+		return tempAge;
+	}
+	users = []
+	for (var i = 0; i < 10; i++) {
+		var user = {};
+		user.userName = randName();
+		user.password = 'password';
+		user.gender = randGen();
+		user.seeking = randGen();
+		user.age = randAge();
+		user.bio = "Looking to Mingle!";
+		if (user.gender==='m') {
+			user.img =  $('#create-img').val()==='' ? '/assets/img/default_man.jpg':$('#create-img').val();
+		} else {
+			user.img = $('#create-img').val()==='' ? '/assets/img/default_woman.jpg':$('#create-img').val();
+		}
+		users.push(user);
+	}
+	for (var i = 0; i < users.length; i++) {
+		$.ajax('/create', {
+			type:'POST',
+			data: users[i]
+		}).done((res)=>{
+				console.log('User created: ', res);
+		}).fail((res) => {
+			console.log(res.responseText);
 		});
 	}
 }
@@ -129,14 +196,11 @@ function userSwipe(element) {
  	if ($(element).parent()==tileArr[tileArr.length-1]){
  		$('.noMore').show();
  	}		
-	if (swipe===true) {
+	if (swipe==="true") {
  		socket.emit('swipe right', swipeData)
  	}
  	$.post('/userView/swipe', swipeData).done((res) => {
- 		if (res) {
- 			console.log('res from /userview/swipe', res);
- 			window.location.href = `/${res.userName}/video`
- 		}
+ 	
  	});
 }
 //This function layers the user tiles as they are populated
@@ -163,9 +227,9 @@ function updateUser(element) {
 	updateUser.img      = $('#update-img').val().trim() || undefined;
 	updateUser.bio      = $('#update-bio').val().trim() || undefined;
 
-	$.ajax('/api/update/'+userName, {
-		type:'GET'
-	}).done((res)=>{
+	// $.ajax('/api/update/'+userName, {
+	// 	type:'GET'
+	// }).done((res)=>{
 
 		$.ajax('/api/update', {
 			type: 'POST',
@@ -174,7 +238,7 @@ function updateUser(element) {
 			$('#update-account-modal').hide();
 			location.reload();
 		});
-	});
+	// });
 }
 //===================================
 //In the future we hope to add video
@@ -259,30 +323,33 @@ function enterMessage(event) {
 	  	socket.emit('send message', user)
   		let myMessage = $('<div class="bubble-right">').text(user.text);
 		$('.msgWindow').append(myMessage);
-		$('body, html').css("scrollTop", $(myMessage).offset().top);
   		$('.chatInput:focus').val('');
+  		$(myMessage).parent().scrollTop($(myMessage).offset().top);
 	  }
 	}
 }
 
-function showChatBubble(element) {
-	let x = $(element).offset();
-	let height = parseInt($(element).css('height'));
-	let pos = x.top - 100 + (height/2);
-	let user = $(element).text();
+//commented out for future use
 
-	$('#connectBubble').css({
-		'top': pos,			
-	}).fadeIn().attr('data-username', user);
-}
+// function showChatBubble(element) {
+// 	let x = $(element).offset();
+// 	let height = parseInt($(element).css('height'));
+// 	let pos = x.top - 100 + (height/2);
+// 	let user = $(element).text();
 
-function hideChatBubble(event) {
-	console.log(!$(event.target).closest('#bubble-container').length)
-	if(!$(event.target).closest('#bubble-container').length) {
-   		console.log('firing inside where fadeout is called')
-        $('#connectBubble').fadeOut();
-    }  
-}
+// 	$('#connectBubble').css({
+// 		'top': pos,			
+// 	}).fadeIn().attr('data-username', user);
+// }
+
+// function hideChatBubble(event) {
+// 	console.log(!$(event.target).closest('#bubble-container').length)
+// 	if(!$(event.target).closest('#bubble-container').length) {
+//    		console.log('firing inside where fadeout is called')
+//         $('#connectBubble').fadeOut();
+//     }  
+// }
+
 // function addBackUser(element) {
 // 	let userName = $(element).attr('data-username');
 // 	let img = $(element).attr('data-img');
