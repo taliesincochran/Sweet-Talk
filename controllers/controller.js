@@ -143,10 +143,9 @@ module.exports = function (app, db, io) {
 
   });
   //When the user logs out, the page will redirect to the index
-      app.get('/logout', function(req, res) { 
-        // socket.disconnect();
-        res.redirect('/'); 
-    });
+  app.get('/logout', function(req, res) { 
+    res.redirect('/'); 
+  });
 
   //When the user logs in, they get this view.
   app.get('/userView', function(req,res) {
@@ -162,11 +161,10 @@ module.exports = function (app, db, io) {
     })
 
   db.User.findAll({
-      where: {
-          gender: currentUser.seeking,
-          seeking: currentUser.gender
-
-      }
+    where: {
+        gender: currentUser.seeking,
+        seeking: currentUser.gender
+    }
   }).done((results)=>{
       for (var i = 0; i<results.length; i++) {
         if(results[i].dataValues.userName !== currentUser.userName) {
@@ -258,5 +256,5 @@ module.exports = function (app, db, io) {
   });//end of socket connection code
 
 
-}//end of export obj  
+})//end of export obj  
 
